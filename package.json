@@ -1,5 +1,5 @@
 {
-  "name": "discord-bot-terminal",
+  "name": "discord-bot-in-terminal",
   "version": "0.0.1",
   "description": "Discord Bot in your terminal",
   "main": "index.js",
