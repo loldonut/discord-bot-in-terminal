@@ -27,7 +27,7 @@ async function welcome() {
 async function askBotInfo() {
     const answers = await inquirer.prompt({
         name: 'bot_token',
-        type: 'input',
+        type: 'password',
         message: 'What is your bot\'s token?'
     });
     
@@ -58,7 +58,7 @@ async function startBot(token) {
     });
     
     try {
-        client.login(`${token}`);
+        await client.login(`${token}`);
         spinner.success({ text: `Successfully Logged in to the Bot` });
     } catch (err) {
         spinner.error({ text: 'Invalid Token Provided' });
