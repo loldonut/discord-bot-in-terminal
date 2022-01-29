@@ -1,6 +1,6 @@
 # discord-bot-in-terminal
 
-Run your bot in your terminal!
+Run your bot in your terminal! \(with/using [discord.js](https://npmjs.com/package/discord.js)\)
 
 **Do `npx discord-bot-in-terminal`**
 

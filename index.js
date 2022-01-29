@@ -14,10 +14,11 @@ const sleep = (ms = 2000) => new Promise((r) => setTimeout(r, ms));
 let botToken;
 let client;
 let botStatusName;
+let botStatusType;
 
 async function welcome() {
     const rainbowTitle = chalkAnimation.rainbow(
-        'Create a DJS Bot!'
+        'Log in to your Discord Bot! (Using DJS)'
     );
     
     await sleep();
@@ -31,6 +32,11 @@ async function askBotInfo() {
         message: 'What is your bot\'s token?'
     });
     
+    if(!answers.bot_token) {
+        console.log('You did not put the bot\'s token');
+        process.exit(1);
+    }
+    
     const botStatus = await inquirer.prompt({
         name: 'bot_status_name',
         type: 'input',
@@ -40,6 +46,20 @@ async function askBotInfo() {
         }
     });
     
+    if (botStatus.bot_status_name) {
+        const botStatusTypeQ = await inquirer.prompt({
+            name: 'bot_status_type',
+            type: 'list',
+            message: 'Bot Status type?',
+            choices: [
+                "PLAYING",
+                "LISTENING",
+            ]
+        });
+        
+        botStatusType = botStatusTypeQ.bot_status_type;
+    }
+    
     botToken = answers.bot_token;
     botStatusName = botStatus.bot_status_name;
     
@@ -48,11 +68,9 @@ async function askBotInfo() {
 
 async function startBot(token) {
     const spinner = createSpinner('Logging in to the bot').start();
-    await sleep()
     
     client = new Client({
         intents: [
-            Intents.FLAGS.GUILD_MESSAGES,
             Intents.FLAGS.GUILDS,
         ],
     });
@@ -60,9 +78,14 @@ async function startBot(token) {
     try {
         await client.login(`${token}`);
         spinner.success({ text: `Successfully Logged in to the Bot` });
+        
+        if(botStatusName && botStatusType) {
+            await client.user.setActivity(botStatusName, { type: botStatusType });
+        }
     } catch (err) {
         spinner.error({ text: 'Invalid Token Provided' });
         console.log(err);
+        await sleep(1000);
         process.exit(1);
     }
 }
