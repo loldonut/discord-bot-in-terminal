@@ -85,7 +85,7 @@ async function startBot(token) {
     
     try {
         await client.login(`${token}`);
-        spinner.success({ text: `Successfully Logged in to the Bot` });
+        spinner.success({ text: `Successfully Logged in to the Bot (as ${client.user.tag})` });
         
         if(botStatusName && botStatusType) await client.user.setActivity(botStatusName, { type: botStatusType });
     } catch (err) {
