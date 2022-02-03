@@ -25,6 +25,9 @@ async function welcome() {
     rainbowTitle.stop();
 }
 
+/** 
+ * Prompts your for things that is important to start the bot
+ */
 async function askBotInfo() {
     const answers = await inquirer.prompt({
         name: 'bot_token',
@@ -40,7 +43,7 @@ async function askBotInfo() {
     const botStatus = await inquirer.prompt({
         name: 'bot_status_name',
         type: 'input',
-        message: 'Bot Status',
+        message: 'Bot Status (Name)',
         default() {
             return false;
         }
@@ -66,6 +69,11 @@ async function askBotInfo() {
     await startBot(botToken);
 }
 
+
+/** 
+ * Starts your bot
+ * @param {string} token
+ */
 async function startBot(token) {
     const spinner = createSpinner('Logging in to the bot').start();
     
@@ -79,9 +87,7 @@ async function startBot(token) {
         await client.login(`${token}`);
         spinner.success({ text: `Successfully Logged in to the Bot` });
         
-        if(botStatusName && botStatusType) {
-            await client.user.setActivity(botStatusName, { type: botStatusType });
-        }
+        if(botStatusName && botStatusType) await client.user.setActivity(botStatusName, { type: botStatusType });
     } catch (err) {
         spinner.error({ text: 'Invalid Token Provided' });
         console.log(err);
